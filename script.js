@@ -16,3 +16,7 @@ document.getElementById('appearance').onclick=()=>{
       }
     }
   }
+
+window.addEventListener('load', () => {
+  document.querySelector('.land-intro').classList.add('loaded'); 
+});
