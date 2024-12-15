@@ -34,8 +34,9 @@ a{
 
 
 .land-intro{
+    transform: translateY(-20px);
     opacity: 0;
-    transition: opacity 1s ease-in;
+    transition: opacity 1s ease-in, transform 1s ease-in;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -43,10 +44,12 @@ a{
     margin-left: 10rem;
     margin-right: 10rem;
 }
-.land-intro.loaded{
+.land-intro.loaded {
+    transform: translateY(0);
     opacity: 1;
 }
-.land-intro h1,p{
+
+.land-intro h1, .land-intro p{
     opacity: 0;
     transition: opacity 2s ease-in;
 }
@@ -59,4 +62,33 @@ a{
 #landing-profile-img{
     width: 25vw;
     border-radius: 50%;
+}
+
+
+.get-in-touch {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 8px;
+
+}
+#con-h2, #p-mail{
+    margin: 0px;
+}
+.contact-mail {
+    color: #007bff;
+    text-decoration: none;
+}
+.contact-mail:hover {
+    text-decoration: underline;
+}
+.con-pro-media{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.con-pro-media span{
+    margin-right: 1rem;
 }
