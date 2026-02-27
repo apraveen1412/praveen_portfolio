@@ -1,71 +1,83 @@
-document.getElementById('appearance').onclick = () => {
-  const apElement = document.getElementById('ap');
-  const anchorTags = document.getElementsByTagName('a');
-  const apsub = document.querySelector('.ap-sub');
-  const paraTags = document.getElementsByTagName('p');
-  const moreBlogs = document.querySelector('.more-blogs');
-  const moreBlogsAnchor = document.querySelector('.more-blogs a');
+const appearanceButton = document.getElementById('appearance');
 
-  const toggleColors = (elements, defaultColor, activeColor) => {
+if (appearanceButton) {
+  appearanceButton.onclick = (event) => {
+    event.preventDefault();
+
+    const apElement = document.getElementById('ap');
+    const anchorTags = document.getElementsByTagName('a');
+    const apsub = document.querySelector('.apsub');
+    const paraTags = document.getElementsByTagName('p');
+    const moreBlogs = document.querySelector('.more-blogs');
+    const moreBlogsAnchor = document.querySelector('.more-blogs a');
+
+    const toggleColors = (elements, defaultColor, activeColor) => {
       for (let i = 0; i < elements.length; i++) {
-          elements[i].style.color = elements[i].style.color === activeColor ? defaultColor : activeColor;
+        elements[i].style.color = elements[i].style.color === activeColor ? defaultColor : activeColor;
       }
+    };
+
+    if (apElement) {
+      if (apElement.style.color === 'white') {
+        apElement.style.color = '';
+        apElement.style.backgroundColor = '';
+        if (moreBlogs) moreBlogs.style.backgroundColor = 'rgb(31, 31, 31)';
+        if (moreBlogsAnchor) moreBlogsAnchor.style.color = 'whitesmoke';
+      } else {
+        apElement.style.color = 'white';
+        apElement.style.backgroundColor = 'black';
+        if (moreBlogs) moreBlogs.style.backgroundColor = 'whitesmoke';
+        if (moreBlogsAnchor) moreBlogsAnchor.style.color = 'rgb(31, 31, 31)';
+      }
+    }
+
+    toggleColors(anchorTags, '', 'gray');
+
+    if (apsub) {
+      if (apsub.style.color === 'whitesmoke') {
+        apsub.style.color = '';
+        apsub.style.backgroundColor = '';
+      } else {
+        apsub.style.color = 'lightgray';
+        apsub.style.backgroundColor = 'rgb(31, 31, 31)';
+      }
+    }
+
+    toggleColors(paraTags, '', 'gray');
   };
-
-  // Toggle colors and backgrounds for apElement and anchorTags
-  if (apElement.style.color === 'white') {
-      apElement.style.color = ''; // Reset to default
-      apElement.style.backgroundColor = '';
-      moreBlogs.style.backgroundColor = 'rgb(31, 31, 31)';
-      moreBlogsAnchor.style.color = 'whitesmoke';
-  } else {
-      apElement.style.color = 'white';
-      apElement.style.backgroundColor = 'black';
-      moreBlogs.style.backgroundColor = 'whitesmoke';
-      moreBlogsAnchor.style.color = 'rgb(31, 31, 31)';
-  }
-  toggleColors(anchorTags, '', 'gray');
-
-  // Toggle colors and backgrounds for apsub and paraTags
-  if (apsub.style.color === 'whitesmoke') {
-      apsub.style.color = ''; // Reset to default
-      apsub.style.backgroundColor = '';
-  } else {
-      apsub.style.color = 'lightgray';
-      apsub.style.backgroundColor = 'rgb(31, 31, 31)';
-  }
-  toggleColors(paraTags, '', 'gray');
-};
-
-
-
-
-
-window.addEventListener('load', () => {
-  document.querySelector('.land-intro').classList.add('loaded'); 
-});
-
-document.querySelector('.contact').onclick = (event) => {
-  event.preventDefault();
-  document.querySelector('.get-in-touch').scrollIntoView({
-    behavior:"smooth"
-  });
 }
 
-document.querySelector('.contact-mail').onclick = (event) => {
-  event.preventDefault(); // Prevent the default link behavior
-
-  function isMobileDevice() {
-      return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+window.addEventListener('load', () => {
+  const introSection = document.querySelector('.land-intro');
+  if (introSection) {
+    introSection.classList.add('loaded');
   }
+});
 
-  const email = "aaraveetipraveen@gmail.com";
+const contactButton = document.querySelector('.contact');
+if (contactButton) {
+  contactButton.onclick = (event) => {
+    event.preventDefault();
+    const contactSection = document.querySelector('.get-in-touch');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+}
 
-  if (isMobileDevice()) {
-      // On mobile, try to open the Gmail app or default email client with no subject or body
+const contactMail = document.querySelector('.contact-mail');
+if (contactMail) {
+  contactMail.onclick = (event) => {
+    event.preventDefault();
+
+    const isMobileDevice = () => /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    const email = 'aaraveetipraveen@gmail.com';
+
+    if (isMobileDevice()) {
       window.location.href = `mailto:${email}`;
-  } else {
-      // On desktop, redirect to Gmail web compose page with no subject or body
+    } else {
       window.location.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}`;
-  }
-};
+    }
+  };
+}

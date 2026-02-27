@@ -1,0 +1,40 @@
+.projects-section {
+    min-height: 60vh;
+}
+
+.projects-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 0.25rem;
+}
+
+.projects-subtitle {
+    color: #555;
+    margin-bottom: 0;
+}
+
+.project-card {
+    border: 1px solid #dfe4ea;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.project-meta {
+    font-size: 0.9rem;
+    color: #616161;
+}
+
+.project-link {
+    font-weight: 500;
+}
+
+#projects-status {
+    max-width: 48rem;
+    margin: 0 auto 1.5rem;
+}
