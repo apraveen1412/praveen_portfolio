@@ -1,18 +1,20 @@
 .B-page-intro{
   display:inline-block;
 }
+
 .BP-intro-text{
   font-size: 1rem;
   letter-spacing: 2px;
   font-family: 'Courier New', Courier, monospace;
-  border-right:2px solid black;
+  color: var(--text-color);
+  border-right:2px solid var(--text-color);
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  animation: 
+  animation:
     typing 2s steps(15),
     cursor .4s step-end infinite alternate;
-} 
+}
 
 /* cursor blinking */
 @keyframes cursor{
