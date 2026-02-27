@@ -1,30 +1,3 @@
-const FALLBACK_REPOS = [
-  {
-    name: 'praveen_portfolio',
-    description: 'Personal portfolio website built with HTML, CSS, and JavaScript.',
-    language: 'JavaScript',
-    html_url: 'https://github.com/apraveen1412/praveen_portfolio',
-    created_at: '2024-06-01T09:30:00Z',
-    pushed_at: '2025-01-10T14:00:00Z'
-  },
-  {
-    name: 'todo-app',
-    description: 'Simple to-do app with local storage support.',
-    language: 'JavaScript',
-    html_url: 'https://github.com/apraveen1412/todo-app',
-    created_at: '2024-05-11T08:00:00Z',
-    pushed_at: '2024-11-21T11:22:00Z'
-  },
-  {
-    name: 'bootstrap-landing-page',
-    description: 'Responsive landing page using Bootstrap components.',
-    language: 'HTML',
-    html_url: 'https://github.com/apraveen1412/bootstrap-landing-page',
-    created_at: '2024-03-05T10:15:00Z',
-    pushed_at: '2024-07-09T18:40:00Z'
-  }
-];
-
 const projectsListElement = document.getElementById('projects-list');
 const projectsStatusElement = document.getElementById('projects-status');
 
@@ -40,8 +13,8 @@ const formatDate = (value) => {
 };
 
 const sortRepos = (repos) => [...repos].sort((a, b) => {
-  const aDate = new Date(a.pushed_at || a.created_at || 0).getTime();
-  const bDate = new Date(b.pushed_at || b.created_at || 0).getTime();
+  const aDate = new Date(a.updated_at || a.created_at || 0).getTime();
+  const bDate = new Date(b.updated_at || b.created_at || 0).getTime();
   return bDate - aDate;
 });
 
@@ -50,14 +23,9 @@ const showStatus = (message, type = 'secondary') => {
   projectsStatusElement.textContent = message;
 };
 
-const renderEmptyState = (message) => {
-  projectsListElement.innerHTML = '';
-  showStatus(message, 'warning');
-};
-
-const renderProjects = (repos, hideStatus = true) => {
+const renderProjects = (repos) => {
   projectsListElement.innerHTML = repos.map((repo) => {
-    const updatedOn = formatDate(repo.pushed_at || repo.updated_at);
+    const updatedOn = formatDate(repo.updated_at);
     const publishedOn = formatDate(repo.created_at);
 
     return `
@@ -76,35 +44,27 @@ const renderProjects = (repos, hideStatus = true) => {
     `;
   }).join('');
 
-  if (hideStatus) {
-    projectsStatusElement.classList.add('d-none');
-  }
+  projectsStatusElement.classList.add('d-none');
 };
 
 const fetchProjects = async () => {
   try {
-    const response = await fetch('https://api.github.com/users/apraveen1412/repos');
+    const response = await fetch('/api/projects');
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const repos = await response.json();
     const sortedRepos = sortRepos(repos);
 
     if (!sortedRepos.length) {
-      renderEmptyState('No repositories found right now. Please check back later.');
+      showStatus('No projects found right now. Please check back later.', 'warning');
+      projectsListElement.innerHTML = '';
       return;
     }
 
     renderProjects(sortedRepos);
   } catch (error) {
-    const fallbackRepos = sortRepos(FALLBACK_REPOS);
-
-    if (!fallbackRepos.length) {
-      renderEmptyState('Unable to load projects at the moment. Please try again later.');
-      return;
-    }
-
-    showStatus('GitHub API is unavailable, showing fallback project data.', 'warning');
-    renderProjects(fallbackRepos, false);
+    projectsListElement.innerHTML = '';
+    showStatus('Unable to load projects at the moment. Please try again later.', 'danger');
   }
 };
 
