@@ -50,10 +50,32 @@ function formatPostDate(dateValue) {
   });
 }
 
-function createTagBadges(tags) {
-  return tags
-    .map((tag) => `<span class="tag-badge">${tag}</span>`)
-    .join('');
+function createTagBadgeElements(tags) {
+  return tags.map((tag) => SafeRender.createElement('span', { className: 'tag-badge', text: tag }));
+}
+
+function createPostArticle(post, className, options = {}) {
+  const { includeTags = true } = options;
+  const article = SafeRender.createElement('article', { className });
+  const dateElement = SafeRender.createElement('p', { className: 'post-date', text: formatPostDate(post.date) });
+  const titleElement = SafeRender.createElement('h3', { text: post.title });
+  const summaryElement = SafeRender.createElement('p', { text: post.summary });
+  const linkElement = SafeRender.createElement('a', {
+    className: 'read-post-link',
+    text: 'Read post',
+    attributes: { href: SafeRender.sanitizeUrl(post.url) }
+  });
+
+  SafeRender.appendChildren(article, [dateElement, titleElement, summaryElement]);
+
+  if (includeTags && post.tags) {
+    const tagGroup = SafeRender.createElement('div', { className: 'tag-group' });
+    SafeRender.appendChildren(tagGroup, createTagBadgeElements(post.tags));
+    article.appendChild(tagGroup);
+  }
+
+  article.appendChild(linkElement);
+  return article;
 }
 
 function renderFeaturedPost(post) {
@@ -63,16 +85,10 @@ function renderFeaturedPost(post) {
     return;
   }
 
-  featuredContainer.innerHTML = `
-    <h2>Latest Post</h2>
-    <article class="featured-post-card">
-      <p class="post-date">${formatPostDate(post.date)}</p>
-      <h3>${post.title}</h3>
-      <p>${post.summary}</p>
-      <div class="tag-group">${createTagBadges(post.tags)}</div>
-      <a href="${post.url}" class="read-post-link">Read post</a>
-    </article>
-  `;
+  SafeRender.clearChildren(featuredContainer);
+  const sectionHeading = SafeRender.createElement('h2', { text: 'Latest Post' });
+  const article = createPostArticle(post, 'featured-post-card');
+  SafeRender.appendChildren(featuredContainer, [sectionHeading, article]);
 }
 
 function renderBlogList(posts) {
@@ -82,19 +98,10 @@ function renderBlogList(posts) {
     return;
   }
 
-  listContainer.innerHTML = posts
-    .map(
-      (post) => `
-        <article class="blog-post-card">
-          <p class="post-date">${formatPostDate(post.date)}</p>
-          <h3>${post.title}</h3>
-          <p>${post.summary}</p>
-          <div class="tag-group">${createTagBadges(post.tags)}</div>
-          <a href="${post.url}" class="read-post-link">Read post</a>
-        </article>
-      `
-    )
-    .join('');
+  SafeRender.clearChildren(listContainer);
+  posts.forEach((post) => {
+    listContainer.appendChild(createPostArticle(post, 'blog-post-card'));
+  });
 }
 
 function renderRecentPosts(posts, count = 4) {
@@ -104,19 +111,10 @@ function renderRecentPosts(posts, count = 4) {
     return;
   }
 
-  recentContainer.innerHTML = posts
-    .slice(0, count)
-    .map(
-      (post) => `
-        <article class="RB-item">
-          <p class="post-date">${formatPostDate(post.date)}</p>
-          <h3>${post.title}</h3>
-          <p>${post.summary}</p>
-          <a href="${post.url}" class="read-post-link">Read post</a>
-        </article>
-      `
-    )
-    .join('');
+  SafeRender.clearChildren(recentContainer);
+  posts.slice(0, count).forEach((post) => {
+    recentContainer.appendChild(createPostArticle(post, 'RB-item', { includeTags: false }));
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

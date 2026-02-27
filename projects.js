@@ -51,30 +51,59 @@ const showStatus = (message, type = 'secondary') => {
 };
 
 const renderEmptyState = (message) => {
-  projectsListElement.innerHTML = '';
+  SafeRender.clearChildren(projectsListElement);
   showStatus(message, 'warning');
 };
 
-const renderProjects = (repos, hideStatus = true) => {
-  projectsListElement.innerHTML = repos.map((repo) => {
-    const updatedOn = formatDate(repo.pushed_at || repo.updated_at);
-    const publishedOn = formatDate(repo.created_at);
+const createProjectMeta = (label, value) => {
+  const paragraph = SafeRender.createElement('p', { className: 'project-meta mb-1' });
+  const strongText = SafeRender.createElement('strong', { text: `${label}:` });
+  paragraph.appendChild(strongText);
+  paragraph.append(` ${value}`);
+  return paragraph;
+};
 
-    return `
-      <article class="col-12 col-md-6 col-lg-4">
-        <div class="card project-card">
-          <div class="card-body d-flex flex-column">
-            <h2 class="h5 card-title">${repo.name}</h2>
-            <p class="card-text flex-grow-1">${repo.description || 'No description available.'}</p>
-            <p class="project-meta mb-1"><strong>Language:</strong> ${repo.language || 'Not specified'}</p>
-            <p class="project-meta mb-1"><strong>Updated:</strong> ${updatedOn}</p>
-            <p class="project-meta mb-3"><strong>Published:</strong> ${publishedOn}</p>
-            <a class="project-link" href="${repo.html_url}" target="_blank" rel="noopener noreferrer">View Repository <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-          </div>
-        </div>
-      </article>
-    `;
-  }).join('');
+const createProjectCard = (repo) => {
+  const updatedOn = formatDate(repo.pushed_at || repo.updated_at);
+  const publishedOn = formatDate(repo.created_at);
+
+  const article = SafeRender.createElement('article', { className: 'col-12 col-md-6 col-lg-4' });
+  const card = SafeRender.createElement('div', { className: 'card project-card' });
+  const cardBody = SafeRender.createElement('div', { className: 'card-body d-flex flex-column' });
+
+  const title = SafeRender.createElement('h2', { className: 'h5 card-title', text: repo.name || 'Unnamed project' });
+  const description = SafeRender.createElement('p', {
+    className: 'card-text flex-grow-1',
+    text: repo.description || 'No description available.'
+  });
+  const language = createProjectMeta('Language', repo.language || 'Not specified');
+  const updated = createProjectMeta('Updated', updatedOn);
+  const published = createProjectMeta('Published', publishedOn);
+  published.classList.remove('mb-1');
+  published.classList.add('mb-3');
+
+  const link = SafeRender.createElement('a', {
+    className: 'project-link',
+    text: 'View Repository ↗',
+    attributes: {
+      href: SafeRender.sanitizeUrl(repo.html_url),
+      target: '_blank',
+      rel: 'noopener noreferrer'
+    }
+  });
+
+  SafeRender.appendChildren(cardBody, [title, description, language, updated, published, link]);
+  card.appendChild(cardBody);
+  article.appendChild(card);
+
+  return article;
+};
+
+const renderProjects = (repos, hideStatus = true) => {
+  SafeRender.clearChildren(projectsListElement);
+  repos.forEach((repo) => {
+    projectsListElement.appendChild(createProjectCard(repo));
+  });
 
   if (hideStatus) {
     projectsStatusElement.classList.add('d-none');
