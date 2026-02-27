@@ -52,20 +52,27 @@ document.querySelector('.contact').onclick = (event) => {
   });
 }
 
-document.querySelector('.contact-mail').onclick = (event) => {
-  event.preventDefault(); // Prevent the default link behavior
+const contactMailLink = document.querySelector('.contact-mail');
 
-  function isMobileDevice() {
-      return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  }
+if (contactMailLink) {
+  contactMailLink.addEventListener('click', (event) => {
+    const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  const email = "aaraveetipraveen@gmail.com";
+    // Keep normal mailto behavior on mobile and when JavaScript is unavailable.
+    if (isMobileDevice) {
+      return;
+    }
 
-  if (isMobileDevice()) {
-      // On mobile, try to open the Gmail app or default email client with no subject or body
-      window.location.href = `mailto:${email}`;
-  } else {
-      // On desktop, redirect to Gmail web compose page with no subject or body
-      window.location.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}`;
-  }
-};
+    event.preventDefault();
+
+    const gmailComposeUrl = 'https://mail.google.com/mail/?view=cm&fs=1&to=aaraveetipraveen@gmail.com';
+    const fallbackMailto = contactMailLink.getAttribute('href') || 'mailto:aaraveetipraveen@gmail.com';
+
+    const gmailWindow = window.open(gmailComposeUrl, '_blank', 'noopener,noreferrer');
+
+    // If popup is blocked, fall back to the standard mailto behavior.
+    if (!gmailWindow) {
+      window.location.href = fallbackMailto;
+    }
+  });
+}
