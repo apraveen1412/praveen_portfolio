@@ -1,0 +1,26 @@
+[
+  {
+    "id": "post-1",
+    "title": "Building a Portfolio with HTML, CSS, and JavaScript",
+    "date": "2025-01-12",
+    "summary": "A practical walkthrough of how I structured and shipped my personal portfolio website.",
+    "tags": ["Web Development", "Portfolio"],
+    "url": "#"
+  },
+  {
+    "id": "post-2",
+    "title": "Bootstrap Tips for Faster Frontend Prototyping",
+    "date": "2024-12-28",
+    "summary": "Useful Bootstrap classes and layout techniques that help me move from idea to UI quickly.",
+    "tags": ["Bootstrap", "Frontend"],
+    "url": "#"
+  },
+  {
+    "id": "post-3",
+    "title": "JavaScript DOM Patterns I Use in Small Projects",
+    "date": "2024-11-17",
+    "summary": "Simple DOM manipulation patterns that keep code readable when building static-site interactions.",
+    "tags": ["JavaScript", "DOM"],
+    "url": "#"
+  }
+]
