@@ -158,3 +158,44 @@ a{
     visibility: visible; 
     transition: opacity 0.3s ease, visibility 0s ease 0.3s;
 }
+
+.recent-blog-list {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    padding-right: 6vw;
+}
+
+.RB-item {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    height: 100%;
+    min-height: 30vh;
+    width: auto;
+    border-radius: 0.7rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.RB-item h3 {
+    margin: 0.2rem 0;
+    font-size: 1rem;
+}
+
+.RB-item p {
+    font-size: 0.9rem;
+}
+
+.post-date {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin: 0;
+}
+
+.read-post-link {
+    font-weight: 600;
+    color: #007bff;
+}
