@@ -1,18 +1,20 @@
 .B-page-intro{
   display:inline-block;
 }
+
 .BP-intro-text{
   font-size: 1rem;
   letter-spacing: 2px;
   font-family: 'Courier New', Courier, monospace;
-  border-right:2px solid black;
+  color: var(--text-color);
+  border-right:2px solid var(--text-color);
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  animation: 
+  animation:
     typing 2s steps(15),
     cursor .4s step-end infinite alternate;
-} 
+}
 
 /* cursor blinking */
 @keyframes cursor{
@@ -22,4 +24,45 @@
 /* Typing effect */
 @keyframes typing{
   from {width: 0;}
+}
+.blog-main-content {
+  margin: 2rem 10rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.featured-post-card,
+.blog-post-card {
+  background-color: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 0.7rem;
+  padding: 1.2rem;
+}
+
+.featured-post-card h3,
+.blog-post-card h3 {
+  margin-top: 0.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.blog-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.tag-badge {
+  background-color: #eef4ff;
+  color: #0b57d0;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
 }
